@@ -26,7 +26,7 @@ describe('Typewriter', () => {
     document.head.appendChild = jest.fn(node => styleNode = node);
     clock = lolex.install();
   });
-  
+
   afterEach(() => {
     styleNode = undefined;
     clock = clock.uninstall();
@@ -69,6 +69,8 @@ describe('Typewriter', () => {
       delay: 100,
       deleteSpeed: 500,
       loop: true,
+      naturalDelayLowerBound: 120,
+      naturalDelayUpperBound: 160,
       autoStart: true,
       devMode: true,
       skipAddStyles: true,
@@ -150,7 +152,7 @@ describe('Typewriter', () => {
         instance.typeOutAllStrings();
         expect(instance.state.eventQueue).toMatchSnapshot();
       });
-  
+
       it('should correctly add multiple event items to queue when options.strings is an array', () => {
         instance.options.strings = [
           'Hello',
@@ -229,7 +231,7 @@ describe('Typewriter', () => {
         expect(instance.state.eventQueue[2].eventName).toEqual(EVENT_NAMES.REMOVE_ALL);
         expect(instance.state.eventQueue[2].eventArgs.speed).toEqual('natural');
       });
-  
+
       it('should add remove all event item with natural speed by default', () => {
         instance.deleteAll(500);
         expect(instance.state.eventQueue[2].eventName).toEqual(EVENT_NAMES.REMOVE_ALL);
